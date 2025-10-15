@@ -1,4 +1,4 @@
-function [] = DER(dataPath, clusterAlgorithm, save_structures)
+function [] = DER(dataPath, clusterAlgorithm, save_structures, data_format, fileInfo)
 %DER algorithm (Duplicate Event Removal)
 %	DER algorithm (Duplicate Event Removal) identifies spike events
 %   recorded several times (for details see Dehnen, Kehl et al.: Duplicate
@@ -18,13 +18,33 @@ end
 if ~exist('save_structures','var')
     save_structures = true;
 end
-
+if ~exist('clusterAlgorithm','var')
+    error('not enough input argumemts: "clusterAlgorithm" is missing');
+end
+if ~exist('data_format','var')
+    data_format = 'neuralynx';
+end
+if ~exist('fileInfo','var')
+    fileInfo = [];
+end
 
 % collects list of region, bundleID, channelID, threshold, clusterID, unitClass, 
 % spike-times and spike-shapes for each spike in a session; select the
 % cluster algorithm to Combianto, Wave_clus
-[spikeInfos] = der_get_spikeInfos(clusterAlgorithm);
-
+if strcmpi(data_format,'neuralynx')
+    [spikeInfos] = der_get_spikeInfos(clusterAlgorithm);
+elseif strcmpi(data_format,'blackrock')
+    if strcmpi(clusterAlgorithm, 'Combinato')
+        warning('Clustering algorithm "Combinato" not supported for Blackrock data. Using "Wave_clus" instead.');
+        clusterAlgorithm = 'Wave_clus';
+    end
+    if isempty(fileInfo)
+        error('For Blackrock data, fileInfo struct must be provided.');
+    end
+    [spikeInfos] = der_get_spikeInfos_blackrock(clusterAlgorithm, fileInfo);
+else
+    error('data_format not supported. Choose "neuralynx" or "blackrock".')
+end
 
 %% Part I: spike events within different bundles
 % deletes duplicate spike-shapes over different bundles
