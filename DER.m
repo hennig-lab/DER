@@ -41,7 +41,7 @@ elseif strcmpi(data_format,'blackrock')
     if isempty(fileInfo)
         error('For Blackrock data, fileInfo struct must be provided.');
     end
-    [spikeInfos] = der_get_spikeInfos_blackrock(clusterAlgorithm, fileInfo);
+    [spikeInfos] = der_get_spikeInfos_blackrock(fileInfo);
 else
     error('data_format not supported. Choose "neuralynx" or "blackrock".')
 end
@@ -75,7 +75,9 @@ end
 spikeInfos=spikeInfos(spikeInfos.detectionLabel == 1,:);
 
 % saving CSC*_spikes.mat and times_CSC*.mat from spikeInfos after deleting
-% spikes detected multiple times 
-der_save_spikeTimes(spikeInfos, clusterAlgorithm);
-
+% spikes detected multiple times
+if strcmpi(data_format,'neuralynx')
+    der_save_spikeTimes(spikeInfos, clusterAlgorithm);
+elseif strcmpi(data_format,'blackrock')
+    der_save_spikeTimes_blackrock(spikeInfos, fileInfo);
 end

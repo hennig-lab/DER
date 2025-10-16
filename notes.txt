@@ -1,0 +1,14 @@
+
+assumptions:
+- assumes channel names and bundle identities are in *.ncs files
+	- assumes neuralynx: NCSFiles = struct2table(dir('*.ncs'));
+	- assumes channel name is findable from ncs files
+	- assumes bundle identity is findable from ncs files
+- assumes fixed format of spikes and times file names
+	- spikefile = sprintf('CSC%d_spikes.mat',channels(chan));
+	- timesfile = sprintf('times_CSC%d.mat',channels(chan));
+	- instead of having the filename be part of spikeInfos
+- assumes threshold field name: load(spikefile,'threshold_all')
+	- instead of load(spikefile,'threshold')
+
+- assume we are given a list of structs, where each entry has the time filename, the spikes filename, the channel name, and the bundle number

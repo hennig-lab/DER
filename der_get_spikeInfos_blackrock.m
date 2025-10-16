@@ -1,4 +1,4 @@
-function [spikeInfos] = der_get_spikeInfos_blackrock(clusterAlgorithm, fileInfo)
+function [spikeInfos] = der_get_spikeInfos_blackrock(fileInfo)
 %get_spikeInfos
 %   get_spikeInfos collects list of region, bundleID, channelID, threshold,
 %   clusterID, unitClass, spike-times and spike-shapes for each spike in a 
@@ -12,7 +12,7 @@ function [spikeInfos] = der_get_spikeInfos_blackrock(clusterAlgorithm, fileInfo)
 %    - channel = channel number
 %    - channel_name = name of the channel
 %    - timesfile = path to the times.mat file for the channel
-%    - spikesfile = path to the spikes.mat file for the channel
+%    - threshold 
 %    - bundle = bundle number the channel belongs to
 %
 %   Output: spikeInfos (table) containing the following information for each
@@ -33,8 +33,11 @@ function [spikeInfos] = der_get_spikeInfos_blackrock(clusterAlgorithm, fileInfo)
 %   Licence, v. 2.0. if a copy of the MPL was not distributed with this file,
 %   you can optain one at http://mozilla.org/MPL/2.0/.
 dbstop if error
-if ~exist('clusterAlgorithm','var')
-    error('not enough input argumemts: "clusterAlgorithm" is missing');
+if ~exist('fileInfo','var')
+    error('not enough input argumemts: "fileInfo" is missing');
+end
+if isempty(fileInfo)
+    error('Must provide fileInfo.');
 end
 
 % get all spikeshapes, peaktimes and indices of bundle
@@ -58,14 +61,14 @@ for chan = 1:numel(fileInfo)
     chanId = fileInfo(chan).channel;
     chanName = fileInfo(chan).channel_name;
     timesfile = fileInfo(chan).timesfile;
-    spikefile = fileInfo(chan).spikesfile;
     currBundle = fileInfo(chan).bundle;
+    currThreshold = fileInfo(chan).threshold;
 
     if exist(timesfile,'file')
         load(timesfile, 'cluster_class', 'spikes')
         timeStamps = [timeStamps; cluster_class(:,2)]; % time-stamp of spike event amplitude (sample 20)
         SpikeShapes = [SpikeShapes; spikes]; % shape of individual spike events
-        channelID = [channelID; ones(size(cluster_class,1),1) + chanId]; % channel number of each individual spike event
+        channelID = [channelID; zeros(size(cluster_class,1),1) + chanId]; % channel number of each individual spike event
         bundleID = [bundleID; zeros(size(cluster_class,1),1) + currBundle]; % bundle number of each individual spike event
         clusterID = [clusterID; cluster_class(:,1)]; % cluster number of each individual spike event
 
@@ -74,8 +77,6 @@ for chan = 1:numel(fileInfo)
         region = [region; currChnname];
 
         % get unit-class for each spike
-        spikeinfo = load(spikefile,'threshold');
-        currThreshold = nanmedian(spikeinfo.threshold);
         currUnitID = unique(cluster_class(:,1));
 
         threshold = [threshold; zeros(size(cluster_class,1),1) + currThreshold];
