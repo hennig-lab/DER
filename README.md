@@ -1,11 +1,13 @@
 # DER algorithm
 Duplicate Event Removal algorithm - Artifact detection in human single unit recordings 
 
-Version 1.1, released October 2025 by Jay Hennig
+Version 1.1, released October 2025 by Jay Hennig.
+
 This version extends the original codepack to support Blackrock input data.
 This project continues to be licensed under the terms of the Mozilla Public License Version 2.0 (MPL 2.0). See the LICENSE for details.
 
-Original code (Version 1.0, released February 2021): Copyright © 2021. Gert Dehnen, Marcel S. Kehl, Florian Mormann, and the University of Bonn Medical Center
+Original code (Version 1.0, released February 2021): Copyright © 2021.
+Gert Dehnen, Marcel S. Kehl, Florian Mormann, and the University of Bonn Medical Center
 This software was tested with MATLAB (R2018a–R2024b) on Linux, Windows, and macOS.
 
 ------------------------------------------------------------------------------------------
@@ -20,11 +22,19 @@ To run the code the following MATLAB packages are required:
 
 Download the source code from this repository and add it to your MATLAB path. 
 To run the automated artefact detection you need to execute `DER.m` in MATLAB.  
-Please provide the data path and define the spike-sorting algorithm used (*'Wave_clus'* or *'Combinato'*) as:  
+For Neuralynx data, please provide the data path and define the spike-sorting algorithm used (*'Wave_clus'* or *'Combinato'*) as:  
 
 ```
 DER(data_path,'Combinato')
 ```  
+Note that this will remove identified artifactual spikes from the original data.
+
+Or if using Blackrock data:
+```
+fileInfo = der_get_blackrock_fileInfo(data_path);
+DER(data_path, 'Wave_clus', false, 'blackrock', fileInfo);
+```
+Note that this will add a `detectionLabel` field to the original `*times*.mat` files, but will not remove any artifactual spikes from the original data.
 
 ## Structure of the code
 
