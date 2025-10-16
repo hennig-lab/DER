@@ -1,14 +1,12 @@
 # DER algorithm
 Duplicate Event Removal algorithm - Artifact detection in human single unit recordings 
 
-Readme for the Duplicate Event Removal algorithm:  
-https://github.com/Geaht/DER
+Version 1.1, released October 2025 by Jay Hennig
+This version extends the original codepack to support Blackrock input data.
+This project continues to be licensed under the terms of the Mozilla Public License Version 2.0 (MPL 2.0). See the LICENSE for details.
 
-Version 1.0, released February 2021  
-
-This project is licensed under the terms of the Mozilla Public License Version 2.0.  
-Copyright (c) by Gert Dehnen, Marcel S. Kehl, Florian Mormann and the University of Bonn Medical Center  
-This software was tested with MATLAB (R2018a) on Linux, Windows and MacOS X
+Original code (Version 1.0, released February 2021): Copyright © 2021. Gert Dehnen, Marcel S. Kehl, Florian Mormann, and the University of Bonn Medical Center
+This software was tested with MATLAB (R2018a–R2024b) on Linux, Windows, and macOS.
 
 ------------------------------------------------------------------------------------------
 The DER algorithm was written in MATLAB2018a. 
