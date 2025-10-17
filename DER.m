@@ -18,10 +18,10 @@ end
 if ~exist('save_structures','var')
     save_structures = true;
 end
-if ~exist('clusterAlgorithm','var')
+if ~exist('clusterAlgorithm','var') % options: 'Combinato', 'Wave_clus'
     error('not enough input argumemts: "clusterAlgorithm" is missing');
 end
-if ~exist('data_format','var')
+if ~exist('data_format','var') % options: 'neuralynx', 'blackrock'
     data_format = 'neuralynx';
 end
 if ~exist('fileInfo','var')
@@ -71,13 +71,14 @@ end
 if save_structures
     save spikeInfos spikeInfos
 end
-% deleting spike events labeled as artificial
-spikeInfos=spikeInfos(spikeInfos.detectionLabel == 1,:);
 
 % saving CSC*_spikes.mat and times_CSC*.mat from spikeInfos after deleting
 % spikes detected multiple times
 if strcmpi(data_format,'neuralynx')
+    % deleting spike events labeled as artificial
+    spikeInfos=spikeInfos(spikeInfos.detectionLabel == 1,:);
     der_save_spikeTimes(spikeInfos, clusterAlgorithm);
 elseif strcmpi(data_format,'blackrock')
+    % keep all spike events, and add the labels to the original times files
     der_save_spikeTimes_blackrock(spikeInfos, fileInfo);
 end

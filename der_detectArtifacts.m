@@ -70,7 +70,7 @@ for currSpike = 1:length(diffDuSp)
 
     progress = round((currSpike / length(diffDuSp))*100);
     if progress > currStatus
-        sprintf('%d%%',progress)
+%         sprintf('%d%%',progress);
         currStatus = currStatus + 1;
     end
     

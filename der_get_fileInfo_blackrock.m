@@ -1,4 +1,4 @@
-function fileInfo = der_get_blackrock_fileInfo(directory)
+function fileInfo = der_get_fileInfo_blackrock(directory)
     
     fldrs = dir(fullfile(directory, 'times_*.mat'));
     fileInfo = [];
