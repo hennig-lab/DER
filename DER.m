@@ -1,4 +1,4 @@
-function [] = DER(dataPath, clusterAlgorithm, save_structures, data_format, fileInfo)
+function DER(dataPath, clusterAlgorithm, save_structures, data_format, fileInfo)
 %DER algorithm (Duplicate Event Removal)
 %	DER algorithm (Duplicate Event Removal) identifies spike events
 %   recorded several times (for details see Dehnen, Kehl et al.: Duplicate
@@ -16,7 +16,7 @@ if exist('dataPath','var') && ~isempty(dataPath)
     cd(dataPath)
 end
 if ~exist('save_structures','var')
-    save_structures = true;
+    save_structures = false;
 end
 if ~exist('clusterAlgorithm','var') % options: 'Combinato', 'Wave_clus'
     error('not enough input argumemts: "clusterAlgorithm" is missing');
@@ -72,10 +72,9 @@ if save_structures
     save spikeInfos spikeInfos
 end
 
-% saving CSC*_spikes.mat and times_CSC*.mat from spikeInfos after deleting
-% spikes detected multiple times
 if strcmpi(data_format,'neuralynx')
-    % deleting spike events labeled as artificial
+    % saving CSC*_spikes.mat and times_CSC*.mat from spikeInfos after deleting
+    % spikes detected multiple times
     spikeInfos=spikeInfos(spikeInfos.detectionLabel == 1,:);
     der_save_spikeTimes(spikeInfos, clusterAlgorithm);
 elseif strcmpi(data_format,'blackrock')

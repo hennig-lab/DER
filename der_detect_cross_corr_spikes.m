@@ -1,5 +1,5 @@
 function [spikeInfos,portion_of_spikes_found ] = der_detect_cross_corr_spikes(spikeInfos,cross_corr_mat_info, ...
-                                 z_thr,option_for_detection,index_ampSpi,session_name,do_plots,outputpath)
+                                 z_thr,option_for_detection,index_ampSpi,session_name,do_plots,outputpath,verbose)
 %%  [spikeInfos,portion_of_spikes_found ] = dds_detect_cross_corr_spikes(spikeInfos,cross_corr_mat_info, ...
 %                z_thr,option_for_detection,index_ampSpi,session_name,do_plots,outputpath)
 %
@@ -54,6 +54,9 @@ end
 
 if ~exist('outputpath','var') || isempty(outputpath)
     outputpath=pwd; 
+end
+if ~exist('verbose', 'var')
+    verbose=false;
 end
 
 if ~exist('do_plots','var') || isempty(do_plots)
@@ -509,10 +512,12 @@ elseif option_for_detection == 2
                    warning('Number of spikes to delete not matches cross_corr mat');
                end
 
-               fprintf('Deleting %i artefact spikes in channel %i cluster %i! \n', ...
-                    sum(A1_delete_idx),ch1,clus_nr1)
-               fprintf('Deleting %i artefact spikes in channel %i cluster %i! \n', ...
-                    sum(A2_delete_idx_new),ch2,clus_nr2)
+               if verbose
+                   fprintf('Deleting %i artefact spikes in channel %i cluster %i! \n', ...
+                        sum(A1_delete_idx),ch1,clus_nr1)
+                   fprintf('Deleting %i artefact spikes in channel %i cluster %i! \n', ...
+                        sum(A2_delete_idx_new),ch2,clus_nr2)
+               end
                 
             end
 
@@ -555,8 +560,10 @@ elseif option_for_detection == 2
                end
                 % save for late which spikes should be deleted
                 spikes_to_delete(MU_delete_idx)=spikes_to_delete(MU_delete_idx)+1;
-                fprintf('Deleting %i Spikes in channel %i cluster %i! \n', ...
-                    sum(MU_delete_idx),ch_MU,clus_MU)
+                if verbose
+                    fprintf('Deleting %i Spikes in channel %i cluster %i! \n', ...
+                        sum(MU_delete_idx),ch_MU,clus_MU)
+                end
 
             % If booth clusters are MU or booth SU in the same bundle, delete spikes
             % in the cluster with a lower signal / noise 
@@ -631,14 +638,18 @@ elseif option_for_detection == 2
 
                 % save for late which spikes should be deleted
                 spikes_to_delete(Low_delete_idx)=spikes_to_delete(Low_delete_idx)+1;        
-                fprintf('Deleting %i Spikes in channel %i cluster %i! \n', ...
-                    sum(Low_delete_idx),ch_Low,clus_Low)
+                if verbose
+                    fprintf('Deleting %i Spikes in channel %i cluster %i! \n', ...
+                        sum(Low_delete_idx),ch_Low,clus_Low)
+                end
             end
 
             % plot and save cros-corr
             if do_plots
-                fprintf('z-Score of the central bin %f (chan %i and %i) \n', ...
+                if verbose
+                    fprintf('z-Score of the central bin %f (chan %i and %i) \n', ...
                              z_central_bin,ch1,ch2);
+                end
                der_plot_cross_corr_example(spikeInfos,bincounts,bin_width,hist_limit,outputpath,...
                                            session_name,ch1,ch2,clus_nr1,clus_nr2,...
                                            idx_clus_1,idx_clus_2,clus_kind_1,clus_kind_2);             
@@ -654,7 +665,7 @@ portion_of_spikes_found=100*sum(spikes_to_delete>0)/numel(spikes_to_delete);
 fprintf('Time for identifying  a total of %i spikes for deletion: %.1f sec \n \n',sum(spikes_to_delete>0),toc)
 fprintf('These are %.1f%% of all spikes! \n',100*sum(spikes_to_delete>0)/numel(spikes_to_delete))
 fprintf('These are %.1f%% of all spikes in the central time-bin! \n \n',100*sum(spikes_to_delete>0)/sum(spikes_in_central_bin))
-
+    
 if sum(spikes_to_delete>0) > sum(spikes_in_central_bin)
     error('Something went wrong! To many spikes marked for deletion!')
 end

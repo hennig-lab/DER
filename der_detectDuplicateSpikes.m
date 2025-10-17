@@ -75,7 +75,6 @@ index_doubleSpikesAll = [];
 EuclDis = [];
 % loop over bundle
 for channel = 1:nr_chBundle:nr_channels
-    disp(num2str(channel))
     % find all existing channels in current bundle
 
     index = 1;
