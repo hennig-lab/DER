@@ -13,7 +13,7 @@ function [spikeInfos] = der_get_spikeInfos_blackrock(fileInfo)
 %    - channel_name = name of the channel
 %    - timesfile = path to the times.mat file for the channel
 %    - threshold 
-%    - bundle = bundle number the channel belongs to
+%    - bundle = bundle number the channel belongs to (e.g. 1-8)
 %
 %   Output: spikeInfos (table) containing the following information for each
 %   spike:
