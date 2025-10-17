@@ -1,5 +1,25 @@
 function fileInfo = der_get_fileInfo_blackrock(directory)
-    
+% function fileInfo = der_get_fileInfo_blackrock(directory)
+%  Get file information for Blackrock data in the specified directory.
+%  The function looks for files named 'times_*.mat' and extracts
+%  relevant information such as channel name, channel number, bundle number,
+%  and threshold from associated spike files.
+% 
+%  Note that this function assumes times files are named in the format:
+% 'times_<channel_name>_<channel_number>.mat'
+%     where <channel_name> includes the bundle number as the last two digits
+%     e.g. 'mRT2cHb01_2325' where '01' is the bundle number and '2325' is the channel number.
+%
+%  Input:
+%    directory - path to the directory containing the Blackrock data files
+%  Output:
+%    fileInfo - struct array with fields:
+%       timesfile - full path to the times file
+%       threshold - threshold value from the associated spikes file
+%       channel_name - name of the channel
+%       channel - channel number
+%       bundle - bundle number
+
     fldrs = dir(fullfile(directory, 'times_*.mat'));
     fileInfo = [];
     for chan = 1:numel(fldrs)
