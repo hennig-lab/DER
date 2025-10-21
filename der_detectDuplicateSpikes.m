@@ -264,7 +264,7 @@ for channel = 1:nr_chBundle:nr_channels
                 index_ch = currSpikeInfos.channelID == index_ch;
                 index_cl = currSpikeInfos.clusterID(index_duplicateSpikes(spi,1));
                 index_cl = currSpikeInfos.clusterID(index_ch) == index_cl;
-                amplitude = nanmedian(currSpikeInfos.SpikeShapes(index_cl,index_ampSpi));
+                amplitude = median(currSpikeInfos.SpikeShapes(index_cl,index_ampSpi), 'omitmissing');
                 threshold = currSpikeInfos.threshold(index_duplicateSpikes(spi,1));
                 signalToNoiseChA = abs(amplitude) / threshold;
                 
@@ -272,7 +272,7 @@ for channel = 1:nr_chBundle:nr_channels
                 index_ch = currSpikeInfos.channelID == index_ch;
                 index_cl = currSpikeInfos.clusterID(index_duplicateSpikes(spi,2));
                 index_cl = currSpikeInfos.clusterID(index_ch) == index_cl;
-                amplitude = nanmedian(currSpikeInfos.SpikeShapes(index_cl,index_ampSpi));
+                amplitude = median(currSpikeInfos.SpikeShapes(index_cl,index_ampSpi), 'omitmissing');
                 threshold = currSpikeInfos.threshold(index_duplicateSpikes(spi,2));
                 signalToNoiseChB = abs(amplitude) / threshold;
                 

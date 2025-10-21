@@ -34,7 +34,7 @@ function fileInfo = der_get_fileInfo_blackrock(directory)
             [channel_name '_spikes.mat']);
         if exist(spikesfile, 'file')
             spikeinfo = load(spikesfile, 'threshold');
-            threshold = nanmedian(spikeinfo.threshold);
+            threshold = median(spikeinfo.threshold, 'omitmissing');
         else
             threshold = nan;
         end
