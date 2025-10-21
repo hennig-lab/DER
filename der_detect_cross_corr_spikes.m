@@ -573,8 +573,8 @@ elseif option_for_detection == 2
                    
 
                % calculate the median amplitude of the clusters 
-                amplitude_clus_1 = nanmedian(spikeInfos.SpikeShapes(idx_clus_1,index_ampSpi));
-                amplitude_clus_2 = nanmedian(spikeInfos.SpikeShapes(idx_clus_2,index_ampSpi));
+                amplitude_clus_1 = median(spikeInfos.SpikeShapes(idx_clus_1,index_ampSpi), 'omitmissing');
+                amplitude_clus_2 = median(spikeInfos.SpikeShapes(idx_clus_2,index_ampSpi), 'omitmissing');
 
                 % get the noise level of the clusters
                 noise_clus_1 = spikeInfos.threshold(find(idx_clus_1,1,'first'));
