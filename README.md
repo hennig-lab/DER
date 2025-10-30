@@ -31,7 +31,7 @@ Note that this will remove identified artifactual spikes from the original data.
 
 Or if using Blackrock data:
 ```
-fileInfo = der_get_blackrock_fileInfo(data_path);
+fileInfo = der_get_fileInfo_blackrock(data_path);
 DER(data_path, 'Wave_clus', false, 'blackrock', fileInfo);
 ```
 Note that this will add a `detectionLabel` field to the original `*times*.mat` files, but will not remove any artifactual spikes from the original data.
